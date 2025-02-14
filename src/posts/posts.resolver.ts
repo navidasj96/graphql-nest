@@ -3,6 +3,7 @@ import { PostsService } from './posts.service';
 import { UpdatePostInput } from './dto/update-post.input';
 import { CreatePostInput } from './dto/create-post.input';
 import { Post } from './entities/posts.entity';
+import { ReactionPostInput } from './dto/reaction-post.input';
 
 @Resolver(() => Post)
 export class PostsResolver {
@@ -31,5 +32,13 @@ export class PostsResolver {
   @Mutation(() => Post)
   removePost(@Args('id', { type: () => Int }) id: number) {
     return this.postsService.remove(id);
+  }
+
+  @Mutation(() => Post)
+  reactionPost(
+    @Args('id', { type: () => Int }) id: number,
+    @Args('reaction') reaction: number,
+  ) {
+    return this.postsService.reation(id, reaction);
   }
 }
