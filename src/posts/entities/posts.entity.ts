@@ -16,4 +16,8 @@ export class Post {
   @Field()
   @Column()
   body: string;
+
+  @Field()
+  @Column()
+  likes: number = 0;
 }

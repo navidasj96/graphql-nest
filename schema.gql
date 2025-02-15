@@ -13,10 +13,10 @@ scalar Date
 type Mutation {
   addRecipe(newRecipeData: NewRecipeInput!): Recipe!
   createPost(createPostInput: CreatePostInput!): Post!
+  reactionPost(id: Int!, reaction: Float!): Post!
   removePost(id: Int!): Post!
   removeRecipe(id: String!): Boolean!
   updatePost(updatePostInput: UpdatePostInput!): Post!
-  updateRecipe(updateRecipe: RecipeUpdate!): Recipe!
 }
 
 input NewRecipeInput {
@@ -28,6 +28,7 @@ input NewRecipeInput {
 type Post {
   body: String!
   id: Int!
+  likes: Float!
   title: String!
 }
 
@@ -44,13 +45,6 @@ type Recipe {
   description: String
   id: ID!
   ingredients: [String!]!
-}
-
-input RecipeUpdate {
-  description: String
-  id: ID!
-  ingredients: [String!]
-  title: String
 }
 
 type Subscription {

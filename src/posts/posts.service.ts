@@ -4,6 +4,7 @@ import { UpdatePostInput } from './dto/update-post.input';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from './entities/posts.entity';
+import { ReactionPostInput } from './dto/reaction-post.input';
 
 @Injectable()
 export class PostsService {
@@ -37,21 +38,48 @@ export class PostsService {
     }
     Object.assign(post, updatePostInput);
 
-    return await this.postRepository.save(post);
+    return this.postRepository.save(post);
   }
 
   async remove(id: number) {
+    let post: Post | null = null;
+
+    try {
+      post = await this.postRepository.findOne({ where: { id } });
+    } catch {
+      throw new Error('network Error');
+    }
+    if (!post) {
+      throw new Error('Post not found');
+    }
+    const postCopy = { ...post };
+    console.log('postCopy', postCopy);
+    await this.postRepository.remove(post);
+    return postCopy;
+  }
+
+  async reation(id: number, reactionType: number) {
     let post: Post | null = null;
     try {
       post = await this.postRepository.findOne({ where: { id } });
     } catch {
       throw new Error('couldnt fetch post');
     }
+
     if (!post) {
       throw new Error('Post not found');
     }
-    const postCopy = { ...post }; // Create a copy of the post object
-    await this.postRepository.remove(post);
-    return postCopy;
+    if (reactionType) {
+      const updatedPost = { ...post, likes: post.likes + 1 } as Post;
+      await this.postRepository.save(updatedPost);
+      return updatedPost;
+    } else if (!reactionType) {
+      const updatedPost = {
+        ...post,
+        likes: post.likes > 0 ? post.likes - 1 : post.likes,
+      } as Post;
+      await this.postRepository.save(updatedPost);
+      return updatedPost;
+    }
   }
 }

@@ -5,7 +5,6 @@ import { NewRecipeInput } from './dto/new-recipe.input';
 import { RecipesArgs } from './dto/recipes.args';
 import { Recipe } from './models/recipe.model';
 import { RecipesService } from './recipes.service';
-import { RecipeUpdate } from './dto/recipe-update';
 
 const pubSub = new PubSub();
 
@@ -44,10 +43,5 @@ export class RecipesResolver {
   @Subscription((returns) => Recipe)
   recipeAdded() {
     return pubSub.asyncIterableIterator('recipeAdded');
-  }
-
-  @Mutation((returns) => Recipe)
-  async updateRecipe(@Args('updateRecipe') updateRecipe: RecipeUpdate) {
-    return this.recipesService.update(updateRecipe);
   }
 }
