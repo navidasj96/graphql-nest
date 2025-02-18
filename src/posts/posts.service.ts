@@ -53,7 +53,7 @@ export class PostsService {
       throw new Error('Post not found');
     }
     const postCopy = { ...post };
-    console.log('postCopy', postCopy);
+
     await this.postRepository.remove(post);
     return postCopy;
   }

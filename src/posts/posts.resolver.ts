@@ -3,7 +3,6 @@ import { PostsService } from './posts.service';
 import { UpdatePostInput } from './dto/update-post.input';
 import { CreatePostInput } from './dto/create-post.input';
 import { Post } from './entities/posts.entity';
-import { ReactionPostInput } from './dto/reaction-post.input';
 
 @Resolver(() => Post)
 export class PostsResolver {
